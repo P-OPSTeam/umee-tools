@@ -1,0 +1,83 @@
+version: '2.2'
+
+networks:
+  default:
+    name: monitoring
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.33.3
+    container_name: prometheus
+    user: 1000:1000
+    command: 
+      - --log.level=warn 
+      - --config.file=/etc/prometheus/prometheus.yml 
+      - --storage.tsdb.path=/prometheus 
+      - --storage.tsdb.retention.time=360d
+      - --web.console.libraries=/usr/share/prometheus/console_libraries 
+      - --web.console.templates=/usr/share/prometheus/consoles
+    ports:
+      - "19090:9090"
+    depends_on:
+      - alertmanager
+    volumes:
+      - ${PROMETHEUS_CONFIG_PATH:-./conf/prometheus/}:/etc/prometheus/:ro
+      - ${XDG_DATA_HOME:-./data}/prometheus:/prometheus
+    restart: unless-stopped
+
+  alertmanager:
+    image: prom/alertmanager:v0.23.0
+    container_name: alertmanager
+    volumes:
+      - ./conf/alertmanager.yaml:/etc/alertmanager/alertmanager.yaml:ro
+      - ${XDG_DATA_HOME:-./data}/alertmanager:/data
+    command:
+      - --config.file=/etc/alertmanager/alertmanager.yaml
+      - --storage.path=/data
+      - --log.level=debug
+    restart: unless-stopped
+    user: 1000:1000
+    ports:
+      - "9093:9093"
+  
+  grafana:
+    image: grafana/grafana:8.4.3
+    user: 1000:1000
+    container_name: grafana
+    ports:
+      - 3000:3000
+    environment: 
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+    volumes:
+      - ${GRAFANA_CONFIG_PATH:-./conf/grafana/grafana.ini}:/etc/grafana/grafana.ini
+      - ./conf/grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./conf/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./conf/grafana/notifiers:/etc/grafana/provisioning/notifiers
+      - ${XDG_DATA_HOME:-./data}/grafana:/var/lib/grafana
+    restart: unless-stopped
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.44.0
+    container_name: cadvisor
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    expose:
+      - 8080
+  
+  node-exporter:
+    image: prom/node-exporter:v1.3.1
+    container_name: node_exporter
+    restart: unless-stopped
+    command:
+      - '--path.rootfs=/host'
+    #network_mode: host
+    pid: host
+    volumes:
+      - '/:/host:ro,rslave'
+    expose:
+      - 9100
