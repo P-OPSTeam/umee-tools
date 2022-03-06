@@ -26,12 +26,21 @@ sudo usermod -aG docker $USER #you need to logout and login back after that
 
 ## Installing the stack
 
-### update start.sh
-Firt of all :
+### Clone the repo
+
+```bash
+git clone https://github.com/P-OPSTeam/umee-tools
+cd umee-tools/grafana
+```
+
+### Update start.sh
+
 - update the admin/password of your grafana
 - Next, If you wanna be alerted, you will need to create an account on pagerduty and get your integration key https://support.pagerduty.com/docs/services-and-integrations
 
-### start the stack
+> alertmanager will fail to start if the PD integration key is not filled up 
+
+### Start the stack
 
 ```bash
 bash start.sh
