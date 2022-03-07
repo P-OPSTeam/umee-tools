@@ -9,7 +9,7 @@ This Monitoring stack is made of :
 
 ## Prereq
 
-For this to work, please do a one off install of docker
+For this to work you'll need sudo privilege to do do a one off install of docker
 
 ```bash
 # install docker / docker-compose
