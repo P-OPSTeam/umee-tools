@@ -45,3 +45,8 @@ cd umee-tools/grafana
 ```bash
 bash start.sh
 ```
+
+## TODO
+
+- add support for umeed and peggod process monitoring
+- add support to monitor peggod ETH balance
