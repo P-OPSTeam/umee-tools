@@ -1558,7 +1558,7 @@
           "type": "prometheus",
           "uid": "$DS"
         },
-        "definition": "label_values(tendermint_consensus_height, chain_id)",
+        "definition": "label_values(tendermint_consensus_fast_syncing, chain_id)",
         "hide": 0,
         "includeAll": false,
         "label": "Chain ID",
@@ -1566,7 +1566,7 @@
         "name": "chain_id",
         "options": [],
         "query": {
-          "query": "label_values(tendermint_consensus_height, chain_id)",
+          "query": "label_values(tendermint_consensus_fast_syncing, chain_id)",
           "refId": "Prometheus-chain_id-Variable-Query"
         },
         "refresh": 1,
@@ -1589,7 +1589,7 @@
           "type": "prometheus",
           "uid": "$DS"
         },
-        "definition": "label_values(tendermint_consensus_height{chain_id=\"$chain_id\"}, instance)",
+        "definition": "label_values(tendermint_consensus_fast_syncing{chain_id=\"$chain_id\"}, instance)",
         "hide": 0,
         "includeAll": false,
         "label": "Instance",
@@ -1597,7 +1597,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(tendermint_consensus_height{chain_id=\"$chain_id\"}, instance)",
+          "query": "label_values(tendermint_consensus_fast_syncing{chain_id=\"$chain_id\"}, instance)",
           "refId": "Prometheus-instance-Variable-Query"
         },
         "refresh": 1,
