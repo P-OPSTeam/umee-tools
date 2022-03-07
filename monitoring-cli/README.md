@@ -4,7 +4,7 @@ To have automatic monitoring of your Node & Validator enabled one can follow thi
 
 ## Script nodemonitor.sh
 
-To monitor the status of the Node & Validator it's possible to run the script **nodemonitor.sh** available in this repository.
+To monitor the status of the Node & Validator it's possible to run the script **nodemonitor_umee.sh** available in this repository.
 This script is based/build on the <https://github.com/stakezone/nodemonitorgaiad> version already available.
 When the script is started it will create a file with log entries that monitors the most important stuff of the node.
 
@@ -30,18 +30,33 @@ The log line entries are:
 * **pctprecommits** if validator metrics are enabled, percentage of last n precommits from blockheight as configured in nodemonitor.sh
 * **pcttotcommits** if validator metrics are enabled, percentage of total commits of the validator set at blockheight
 * **mpc_eligibility** OK if MPC eligibility test suceed (ie stake % above min_eligible_threshold), else NOK. ERR will occurs if curl fails
+* **UMEED proces** OK if it runs, else NOK
+* **PEGGO process** OK if it runs, else NOK
+* **ERR in peggo** OK if it runs, else NOK, sends ERR message to discord or telegram if it's setup
+* **missed blocks** Will check on missed blocks
+* **jailed status** checks if the validator is not jailed
 
 ## Telegram Alerting
 
 for telegram alerts, update :
 
 ```text
-#TELEGRAM
+enable_telegram="false"
 BOT_ID="bot<ENTER_YOURBOT_ID>"
 CHAT_ID="<ENTER YOUR CHAT_ID>"
 ```
 
 you can create your telegram bot following this : <https://core.telegram.org/bots#6-botfather> and obtain the chat_id <https://stackoverflow.com/a/32572159>
+
+## Discord Alerting
+
+for Discord alerts, update :
+
+# DISCORD
+enable_discord="false"
+DISCORD_URL="<ENTER YOUR DISCORD WEBHOOK>"
+
+you can create a discord webhook on the channel at settings page --> integrations --> new webhook
 
 ## Running the script as a service
 
@@ -51,16 +66,13 @@ The following example shows how the service file will look like when running in 
 The service assumes:
 
 * you have the script placed in your **_$HOME/umee-tools/monitoring_** directory
-* run chmod +x /home/$USER/umee-tools/monitoring/nodemonitor_general.sh
-* you used the rootless docker installation in the same repo
+* run chmod +x $HOME/umee-tools/monitoring/nodemonitor_umee.sh
+* you have added your keyring-password in the script at line 24
 
-Please be aware to run the service as the user that has sufficient right to access this directory (normally this will be the user that one used to logon to the system). Best practice would be to create a separate user for the monitoring service, but this guide doesn't cover that!
-
-Create a file called **umee-nodemonitor.service** in the **~/.config/systemd/user/** by following the commands:
+Create a file called **umee-nodemonitor.service** in the **/etc/systemd/system** by following the commands:
 
 ```bash
-mkdir -p ~/.config/systemd/user
-cat<<-EOF > ~/.config/systemd/user/umee-nodemonitor.service
+cat<<-EOF > /etc/systemd/system/umee-nodemonitor.service
 [Unit]
 Description=umee NodeMonitor
 Wants=network-online.target
@@ -68,9 +80,10 @@ After=network-online.target
 
 [Service]
 Type=simple
+User="your user account"
 Restart=always
-RestartSec=1
-ExecStart=/bin/bash -c '. "\$0" && exec "\$@"' /home/$USER/.profile /home/$USER/umee-tools/monitoring/nodemonitor_general.sh
+RestartSec=5
+ExecStart=/home/pops/umee-tools/monitoring-cli/nodemonitor_umee.sh
 
 [Install]
 WantedBy=multi-user.target
@@ -80,31 +93,31 @@ EOF
 Now the service file is created it can be started by the following command:
 
 ```bash
-systemctl --user start umee-nodemonitor
+sudo systemctl start umee-nodemonitor
 ```
 
 To make sure the service will be active even when a reboot takes place, use:
 
 ```bash
-systemctl --user enable umee-nodemonitor
+sudo systemctl enable umee-nodemonitor
 ```
 
 Check the status of the service with:
 
 ```bash
-systemctl --user status umee-nodemonitor
+sudo systemctl status umee-nodemonitor
 ```
 
 If doing any changes to the files after it was first started do:
 
 ```bash
-systemctl --user daemon-reload
+sudo systemctl daemon-reload
 ```
 
 check the nodemonitor log
 
 ```bash
-journalctl --user -fu umee-nodemonitor
+sudo journalctl -fu umee-nodemonitor
 ```
 
 Update the nodemonitor.sh
