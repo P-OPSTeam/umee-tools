@@ -79,10 +79,10 @@ After=network-online.target
 
 [Service]
 Type=simple
-User="your user account"
+User=$USER
 Restart=always
 RestartSec=5
-ExecStart=/home/pops/umee-tools/monitoring-cli/nodemonitor_umee.sh
+ExecStart=$HOME/umee-tools/monitoring-cli/nodemonitor_umee.sh
 
 [Install]
 WantedBy=multi-user.target
@@ -122,9 +122,10 @@ sudo journalctl -fu umee-nodemonitor
 Update the nodemonitor.sh
 
 ```bash
+cd umee-tools
 git stash
 git pull
 git stash pop
-systemctl --user stop umee-nodemonitor
-systemctl --user start umee-nodemonitor
+sudo systemctl stop umee-nodemonitor
+sudo systemctl start umee-nodemonitor
 ```
