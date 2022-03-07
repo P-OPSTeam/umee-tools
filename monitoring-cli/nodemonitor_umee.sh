@@ -142,13 +142,7 @@ nmsg_nodestuck="Your node is now stuck"
 nmsg_node_no_longer_stuck="Your node is no longer stuck, Yeah !"
 node_stuck_status="NA" #node stucktest status to print out to log file
 
-#MPC eligibility test
-min_eligible_threshold=0.02 #2% total state are required to be eligible
-mpc_eligibility_test_n="true"
-nmsg_mpc_eligibility_test_err="MPC eligible test command failed with error"
-nmsg_mpc_eligibility_test_ok="MPC eligibility test now ok"
-nmsg_mpc_eligibility_test_nok="MPC eligibility test just failed !"
-mpc_eligibility_status="NA" #mpc eligibility status to print out to log file 
+
 ################### END NOTIFICATION CONFIG ###################
 
 echo "Notification enabled on telegram : ${enable_telegram} / on discord : ${enable_discord}"
@@ -166,36 +160,6 @@ send_notification() {
     fi
 }
 
-
-check_eligibility_MPC() {
-    total_voting_power=$(curl -s $url/dump_consensus_state | jq -r "[.result.round_state.validators.validators[].voting_power | tonumber] | add")
-    local res1=$?
-    self_voting_power=$(curl -s $url/dump_consensus_state | jq -r --arg VALIDATORADDRESS "$VALIDATORADDRESS" '.result.round_state.validators.validators[] | select(.address==$VALIDATORADDRESS) | {voting_power}' | jq -r ".voting_power")
-    local res2=$?
-
-    if [[ res1 -ne 0 || res2 -ne 0 ]]; then         
-        mpc_eligibility_status="ERR"
-        if [ $eth_endpoint_test_n == "true" ]; then #test was ok
-            send_notification "$nmsg_mpc_eligibility_test_err"
-            mpc_eligibility_test_n="false"
-        fi
-    fi
-
-    if [ $(echo "${min_eligible_threshold} <= (${self_voting_power} / ${total_voting_power})" | bc -l) -eq 1 ]; then
-        #self_voting_power is above min eligible threshold
-        mpc_eligibility_status="OK"
-        if [ $mpc_eligibility_test_n == "false" ]; then #test was ok
-            send_notification "$nmsg_mpc_eligibility_test_ok"
-            mpc_eligibility_test_n="true"
-        fi
-    else
-        mpc_eligibility_status="NOK"
-        if [ $mpc_eligibility_test_n == "true" ]; then #test was not ok
-            send_notification "$nmsg_mpc_eligibility_test_nok"
-            mpc_eligibility_test_n="false"
-        fi
-    fi
-}
 
 if [ -z $CONFIG ]; then
     CONFIG=$HOME/.umee/config/config.toml
@@ -443,9 +407,7 @@ while true ; do
                 done
                 if [ $NPRECOMMITS -eq 0 ]; then pctprecommits="1.0"; else pctprecommits=$(echo "scale=2 ; $precommitcount / $NPRECOMMITS" | bc); fi
 
-                check_eligibility_MPC
-                
-                validatorinfo="isvalidator=$isvalidator pctprecommits=$pctprecommits pcttotcommits=$pcttotcommits mpc_eligibility=$mpc_eligibility_status" umeed_run_status=$umeed_run_status peggo_run_status=$peggo_run_status
+                validatorinfo="isvalidator=$isvalidator pctprecommits=$pctprecommits pcttotcommits=$pcttotcommits umeed_run_status=$umeed_run_status peggo_run_status=$peggo_run_status
             else
                 isvalidator="no"
                 validatorinfo="isvalidator=$isvalidator"

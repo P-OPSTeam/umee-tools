@@ -29,7 +29,6 @@ The log line entries are:
 * **isvalidator** if validator metrics are enabled, can be {yes | no}
 * **pctprecommits** if validator metrics are enabled, percentage of last n precommits from blockheight as configured in nodemonitor.sh
 * **pcttotcommits** if validator metrics are enabled, percentage of total commits of the validator set at blockheight
-* **mpc_eligibility** OK if MPC eligibility test suceed (ie stake % above min_eligible_threshold), else NOK. ERR will occurs if curl fails
 * **UMEED proces** OK if it runs, else NOK
 * **PEGGO process** OK if it runs, else NOK
 * **ERR in peggo** OK if it runs, else NOK, sends ERR message to discord or telegram if it's setup
