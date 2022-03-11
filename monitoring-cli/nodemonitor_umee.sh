@@ -133,7 +133,7 @@ bonded_status="NA" #jailed status to print out to log file
 #Peggo log status
 log_status_n="true" # true or false indicating bonded status
 msg_log_status_ok="$HOSTNAME: Peggo does not have errors in the logs"
-msg_log_status_nok="@here $HOSTNAME: Peggo has the following error $peggolog"
+msg_log_status_nok="@here $HOSTNAME: Peggo has errors, check $HOME/umee-tools/monitoring-cli/errlog.log for the error"
 
 #node stuck
 lastblockheight=0
@@ -339,6 +339,7 @@ while true ; do
                     fi
                 else 
                 echo "errors found in peggo log"
+                    echo $peggolog > $HOME/umee-tools/monitoring-cli/errlog.log
                     if [ $log_status_n == "true" ]; then
                     send_notification "$msg_log_status_nok"
                     log_status_n=false
