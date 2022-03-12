@@ -48,5 +48,9 @@ bash start.sh
 
 ## TODO
 
-- add support for umeed and peggod process monitoring
-- add support to monitor peggod ETH balance
+- [x] add support for umeed and peggod process monitoring
+
+- [] add support to monitor peggod ETH balance
+
+- [] add support for log umeed/peggo log monitoring
+
