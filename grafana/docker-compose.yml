@@ -75,9 +75,21 @@ services:
     restart: unless-stopped
     command:
       - '--path.rootfs=/host'
-    #network_mode: host
     pid: host
     volumes:
       - '/:/host:ro,rslave'
     expose:
       - 9100
+
+  process-exporter:
+    image: ncabatoff/process-exporter:0.7.10
+    container_name: process_exporter
+    command:
+      - '--config.path=/config/config.yaml'
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - '/proc:/host/proc:ro'
+      - ./conf/process-exporter.yaml:/config/config.yaml:ro
+    expose:
+      - 9256

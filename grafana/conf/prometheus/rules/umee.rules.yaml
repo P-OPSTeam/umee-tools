@@ -45,3 +45,21 @@ groups:
       annotations:
         summary: "The umee node {{ $labels.instance }} or network block time is more than 24s"
         description: "The umee node {{ $labels.instance }} or network block time is currently at {{ $value }}"
+
+    - alert: umeed_is_not_running
+      expr: namedprocess_namegroup_num_procs{groupname="umeed"} < 1
+      for: 2m
+      labels:
+        severity: 'warning'
+      annotations:
+        title: 'Umeed process has stopped running'
+        description: 'Umeed process has stopped running, go and check it'
+
+    - alert: peggo_is_not_running
+      expr: namedprocess_namegroup_num_procs{groupname="peggo"} < 1
+      for: 2m
+      labels:
+        severity: 'warning'
+      annotations:
+        title: 'peggo process has stopped running'
+        description: 'peggo process has stopped running, go and check it'
