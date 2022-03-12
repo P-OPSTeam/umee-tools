@@ -339,7 +339,7 @@ while true ; do
                     fi
                 else 
                 echo "errors found in peggo log"
-                    echo $peggolog > $HOME/umee-tools/monitoring-cli/errlog.log
+                    echo $peggolog >> $HOME/umee-tools/monitoring-cli/errlog.log
                     if [ $log_status_n == "true" ]; then
                     send_notification "$msg_log_status_nok"
                     log_status_n=false
