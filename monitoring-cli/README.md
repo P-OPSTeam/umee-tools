@@ -32,7 +32,6 @@ The log line entries are:
 * **UMEED proces** OK if it runs, else NOK
 * **PEGGO process** OK if it runs, else NOK
 * **ERR in peggo** OK if it runs, else NOK, sends ERR message to discord or telegram if it's setup
-* **missed blocks** Will check on missed blocks
 * **jailed status** checks if the validator is not jailed
 
 ## Telegram Alerting
@@ -71,7 +70,7 @@ The service assumes:
 Create a file called **umee-nodemonitor.service** in the **/etc/systemd/system** by following the commands:
 
 ```bash
-cat<<-EOF > /etc/systemd/system/umee-nodemonitor.service
+sudo bash -c 'cat<<-EOF > /etc/systemd/system/umee-nodemonitor.service
 [Unit]
 Description=umee NodeMonitor
 Wants=network-online.target
@@ -86,7 +85,7 @@ ExecStart=$HOME/umee-tools/monitoring-cli/nodemonitor_umee.sh
 
 [Install]
 WantedBy=multi-user.target
-EOF
+EOF'
 ```
 
 Now the service file is created it can be started by the following command:
