@@ -408,7 +408,7 @@ while true ; do
                 done
                 if [ $NPRECOMMITS -eq 0 ]; then pctprecommits="1.0"; else pctprecommits=$(echo "scale=2 ; $precommitcount / $NPRECOMMITS" | bc); fi
 
-                validatorinfo="isvalidator=$isvalidator pctprecommits=$pctprecommits pcttotcommits=$pcttotcommits umeed_run_status=$umeed_run_status peggo_run_status=$peggo_run_status"
+                validatorinfo="isvalidator=$isvalidator pctprecommits=$pctprecommits pcttotcommits=$pcttotcommits umeed_run_status=$umeed_run_status peggo_run_status=$peggo_run_status jailed_status=$jailed_status bonded_status=$bonded_status"
             else
                 isvalidator="no"
                 validatorinfo="isvalidator=$isvalidator"
