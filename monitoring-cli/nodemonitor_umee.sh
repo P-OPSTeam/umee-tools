@@ -330,7 +330,7 @@ while true ; do
                 fi
             
             echo -n "Errors in log : "
-            peggolog=$(journalctl -S "5 minutes ago" -U "1 minute ago" -u peggod -f -o cat | head -q | grep ERR)
+            peggolog=$(journalctl -S "2 minutes ago" -U "1 minute ago" -u peggod -f -o cat | head -q | grep ERR)
                 if [ -z $peggolog ]; then
                 echo "No errors found in peggo log"
                     if [ $log_status_n == "false" ]; then
