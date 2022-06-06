@@ -93,3 +93,15 @@ services:
       - ./conf/process-exporter.yaml:/config/config.yaml:ro
     expose:
       - 9256
+
+  eth-exporter:
+    image: hunterlong/ethexporter:latest
+    container_name: eth_exporter
+    pid: host
+    restart: unless-stopped
+    environment: 
+      - GETH=${ETH_RPC:-http://127.0.0.1:8545}
+    volumes:
+      - './conf/eth_exporter_addresses.txt:/app/addresses.txt:ro'
+    expose:
+      - 9015

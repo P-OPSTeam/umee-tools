@@ -63,3 +63,12 @@ groups:
       annotations:
         title: 'peggo process has stopped running'
         description: 'peggo process has stopped running, go and check it'
+
+    - alert: orchestrator_eth_running_low
+      expr: eth_balance{name="orch_eth"} < 0.5
+      for: 5m
+      labels:
+        severity: 'warning'
+      annotations:
+        title: 'Orchestrator eth balance is running low'
+        description: 'Orchestrator eth balance is running low, add more fund to it'
