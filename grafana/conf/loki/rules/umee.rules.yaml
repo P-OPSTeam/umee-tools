@@ -2,7 +2,7 @@ groups:
   - name: Umee
     rules:
       - alert: Umeed_Log_ERR_detected
-        expr: count_over_time (unit="umeed.service" |~ "ERR.*"[1m]) >= 1
+        expr: count_over_time ({unit="umeed.service"} |~ "ERR.*"[1m]) >= 1
         for: 0m
         labels:
             severity: warning
@@ -12,7 +12,7 @@ groups:
             description: "Umeed logged an ERR"
             logurl: "https://pops.one"
       - alert: Peggod_Log_ERR_detected
-        expr: count_over_time (unit="peggod.service" |~ "ERR.*"[1m]) >= 1
+        expr: count_over_time ({unit="peggod.service"} |~ "ERR.*"[1m]) >= 1
         for: 0m
         labels:
             severity: warning
