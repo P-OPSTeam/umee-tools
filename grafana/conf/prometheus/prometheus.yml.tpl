@@ -19,7 +19,7 @@ alerting:
 scrape_configs:
   - job_name: Umee
     static_configs:
-      - targets: ['PUBLIC_IP:26660', 'process-exporter:9256']
+      - targets: ['PUBLIC_IP:26660', 'process-exporter:9256', 'eth_exporter:9015']
 
   - job_name: prometheus
     static_configs:

@@ -5,9 +5,15 @@ This Monitoring stack is made of :
 - grafana for the viewing of the graph
 - node_exporter to monitor your host
 - prometheus to capture the metrics and make it available for Grafana
-- alertmanager 
+- eth_exporter to monitor a eth add balance
+- process-exporter to monitor peggod and umeed process
+- loki to display logs
+- promtail to send logs to loki
+- alertmanager integrated with pagerduty
 
 ## Prereq
+
+umeed and peggod logs are assumed to be coming from journalctl
 
 For this to work you'll need sudo privilege to do do a one off install of docker
 
@@ -40,6 +46,9 @@ cd umee-tools/grafana
 
 > alertmanager will fail to start if the PD integration key is not filled up 
 
+- ETH_RPC fill up an eth rpc endpoint https://mainnet.infura.io/****KEYHERE
+- ORCHESTRATOR_ETH_ADDRESS this is the 0x address to monitor
+
 ### Start the stack
 
 ```bash
@@ -50,7 +59,7 @@ bash start.sh
 
 - [x] add support for umeed and peggod process monitoring
 
-- [] add support to monitor peggod ETH balance
+- [x] add support to monitor peggod ETH balance
 
-- [] add support for log umeed/peggo log monitoring
+- [x] add support for log umeed/peggo log monitoring
 
