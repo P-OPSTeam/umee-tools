@@ -117,17 +117,12 @@ services:
       - ${XDG_DATA_HOME:-./data}/loki:/mnt
       - ./conf/loki/rules:/etc/loki/rules/fake:ro
     command: -config.file=/etc/loki/loki.yaml
-    logging:
-      options:
-        loki-url: "http://loki:3100/loki/api/v1/push"
 
   promtail:
     container_name: promtail
     image: grafana/promtail:2.5.0
     volumes:
-      - /var/log:/var/log
-      - ./conf/promtail.yaml:/etc/promtail/promtail.yaml
+      - /var/log:/var/log:ro
+      - ./conf/promtail.yaml:/etc/promtail/promtail.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     command: -config.file=/etc/promtail/promtail.yaml
-    logging:
-      options:
-        loki-url: "http://loki:3100/loki/api/v1/push"

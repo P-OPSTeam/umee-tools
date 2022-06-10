@@ -25,3 +25,13 @@ scrape_configs:
     - source_labels: ['__meta_docker_container_name']
       regex: '/(.*)'
       target_label: 'container'
+
+- job_name: journal
+  journal:
+    max_age: 12h
+    labels:
+      job: systemd-journal
+    path: /var/log/journal
+  relabel_configs:
+    - source_labels: ['__journal__systemd_unit']
+      target_label: 'unit'
