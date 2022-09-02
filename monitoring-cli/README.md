@@ -44,7 +44,7 @@ BOT_ID="bot<ENTER_YOURBOT_ID>"
 CHAT_ID="<ENTER YOUR CHAT_ID>"
 ```
 
-you can create your telegram bot following this : <https://core.telegram.org/bots#6-botfather> and obtain the chat_id <https://stackoverflow.com/a/32572159>
+you can create your telegram bot by following this : <https://core.telegram.org/bots#6-botfather> and obtain the chat_id <https://stackoverflow.com/a/32572159>
 
 ## Discord Alerting
 
