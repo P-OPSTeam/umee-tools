@@ -20,7 +20,7 @@ You will then be on the Grafana welcome page
 
 ## Open a dashboard
 
-Click on for the `4 squares` on your left, then `browse`, then `General`, and `Cosmos/Tendermint Network dashboard`
+Click on for the `4 squares` on the left menu, then `browse`, then `General`, and `Cosmos/Tendermint Network dashboard`
 
 You will then be able to see your validator dashboard :
 
@@ -31,7 +31,7 @@ Feel free to explore the other dashboard and ask us any questions. You can reach
 
 ## Accessing your validator logs (loki)
 
-Click on the `compass` on your left, then `Explorer`, on top click `Prometheus` and change it to `Loki`
+Click on the `compass` on the left menu, then `Explorer`, on top click `Prometheus` and change it to `Loki`
 
 ![Grafana explore](img/grafana-explore.png?raw=true "Grafana explore")
 
@@ -42,3 +42,17 @@ Below an example with the logs of the loki container
 ![Grafana logs](img/grafana-logs.png?raw=true "Grafana logs")
 
 > Note that logs rely on another component of the stack called promtail and is used to send the logs to loki. Freel free to checkout `promtail.yaml` configuration file
+
+## What about the alerts ?
+
+Click on the bell on the left menu
+
+![Grafana Alert](img/grafana-alert.png?raw=true "Grafana Alert")
+
+> Free to navigate into all the defined rules which you can find the same under the conf/prometheus/rules folder
+
+and if you have configured correctly your pagerduty integration key you might start receiving alert
+
+![Pagerduty Alert](img/pagerduty-alert.png?raw=true "Pagerduty Alert")
+
+> Sending of the alerts are managed by alertmanager, checkout the config file alertmanager.yaml
