@@ -55,6 +55,12 @@ cd umee-tools/grafana
 bash start.sh
 ```
 
+### Check the documentation
+
+- [Grafana documentation](docs/grafana.md)
+
 ## TODO
+
+- [ ] finish the documentation
 
 
